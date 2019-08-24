@@ -1,0 +1,23 @@
+FROM ubuntu:18.04
+
+RUN echo 'Etc/UTC' > /etc/timezone                      && \
+    ln -s /usr/share/zoneinfo/Etc/UTC /etc/localtime    && \
+#
+#
+    apt-get --assume-yes update         && \
+    apt-get --assume-yes upgrade        && \
+    apt-get --assume-yes dist-upgrade   && \
+    apt-get --assume-yes autoremove     && \
+    apt-get --assume-yes install apache2 php libapache2-mod-php php-mysql vim tmux
+
+
+COPY ./scripts/web/start.sh /start.sh
+
+COPY ./config/web/000-default.conf /etc/apache2/sites-available/000-default.conf
+
+
+
+EXPOSE 80 443
+
+
+CMD ["/bin/bash", "/start.sh"] 

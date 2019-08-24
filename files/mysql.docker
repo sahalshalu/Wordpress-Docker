@@ -1,0 +1,26 @@
+FROM ubuntu:18.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get --assume-yes update                                                                      && \
+    apt-get --assume-yes upgrade							             && \
+    apt-get --assume-yes dist-upgrade                                                                && \
+    apt-get --assume-yes autoremove                                                                  && \
+    apt-get --assume-yes update                                                                      && \
+    apt-get --assume-yes install mysql-server htop vim tmux                                          && \
+    mkdir -p /var/lib/mysql/backups								     && \
+    mkdir -p /var/run/mysqld									     && \
+    chown -R mysql:mysql /var/run/mysqld							     && \
+    touch /var/log/mysql/mysql.log
+
+COPY ./scripts/mysql/start.sh /start.sh
+COPY ./config/mysql/my.cnf /my.cnf
+
+
+
+
+
+
+
+
+CMD ["/bin/bash", "/start.sh"]

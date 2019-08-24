@@ -1,0 +1,52 @@
+version: '3.3'
+
+volumes:
+  wordpressmysqlDB:
+    external: false
+
+networks:
+  sahal:
+    # Use a custom driver
+    driver: bridge
+
+services:
+  wordpress-receiver-web:
+    restart: always
+    build:
+      context: ./files
+      dockerfile: web.docker
+    volumes:
+    -  ./files/live:/var/www/html/files/live/
+    ports:
+    - "80:80"
+    - "443:443"
+    networks:
+    - sahal
+    container_name: wordpress_docker_receiver-web
+    secrets:
+    - mysql_credentials        
+    image: wordpress-receiver-web
+  wordpress-receiver-mysql:
+    restart: always
+    env_file:
+    - options
+    links:
+    - wordpress-receiver-web
+    build:
+      context: ./files
+      dockerfile: mysql.docker
+    container_name: wordpress_docker_receiver-mysql
+    secrets:
+    - mysql_credentials        
+    volumes:
+      - wordpressmysqlDB:/var/lib/mysql
+    ports:
+    - "3306:3306"
+    networks:
+    - sahal      
+    image: wordpress-receiver-mysql
+
+
+secrets:
+  mysql_credentials:
+    file: ./files/secrets/mysql/mysql.creds      
