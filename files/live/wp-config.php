@@ -29,7 +29,7 @@ define( 'DB_USER', 'admin' );
 define( 'DB_PASSWORD', 'qwerty@123' );
 
 /** MySQL hostname */
-define( 'DB_HOST', 'wordpress_vizru_receiver-mysql' );
+define( 'DB_HOST', 'wordpress_receiver-mysql' );
 
 /** Database Charset to use in creating database tables. */
 define( 'DB_CHARSET', 'utf8' );
